@@ -52,7 +52,7 @@ LM_STUDIO_MODEL_DEFAULT = LM_STUDIO_MODEL_EN
 
 # === Query ===
 TOP_K = 8              # 検索候補数 (バジェットで実際の使用数を制限)
-MAX_CONTEXT_TOKENS = 12000  # LM Studioのコンテキスト長に合わせる
+MAX_CONTEXT_TOKENS = 12000  # LM Studioのコンテキスト長に合わせる (モデルにより調整)
 MAX_OUTPUT_TOKENS = 2048
 TEMPERATURE = 0.3
 
