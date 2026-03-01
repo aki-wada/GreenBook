@@ -91,7 +91,7 @@ python 03_build_vectordb.py
 python 04_query.py "What are the MRI findings of hepatic hemangioma?"
 ```
 
-### クエリの実行
+### クエリの実行 (CLI)
 
 ```bash
 # 英語で質問
@@ -107,6 +107,22 @@ python 04_query.py
 **インタラクティブモードのコマンド**:
 - `quit` / `exit` / `q` — 終了
 - `help` — コマンド一覧
+
+### Web アプリで使う
+
+```bash
+# Web サーバーを起動
+python 05_webapp.py
+```
+
+ブラウザで **http://localhost:8000** を開くとチャット画面が表示されます。
+
+1. テキストボックスに質問を入力して「送信」(または Enter キー)
+2. LLM の回答がリアルタイムにストリーミング表示されます
+3. 回答の下にある「Sources」を開くと参照元ページと類似度を確認できます
+
+> **前提**: Phase 1〜3 のパイプラインが完了済みであること (VectorDB が構築済み)。
+> LM Studio で回答用モデルがロードされていること。
 
 ---
 
@@ -173,7 +189,7 @@ python 03_build_vectordb.py
 - VectorDB 保存先: `~/.greenbook-rag/vectordb/`
 - 既存のコレクションは自動的に再作成されます
 
-### 04_query.py — RAG クエリ
+### 04_query.py — RAG クエリ (CLI)
 
 ベクトル検索 + LLM で回答を生成します。
 
@@ -187,6 +203,27 @@ python 04_query.py "your question here"
 3. BGE モデルで Embedding → ChromaDB からTop-K検索
 4. コンテキストバジェット内でチャンクを選択
 5. LLM が参照資料に基づいて回答生成 (ページ番号引用付き)
+
+### 05_webapp.py — Web アプリ
+
+ブラウザから質問できるチャット UI です。回答はリアルタイムにストリーミング表示されます。
+
+```bash
+# 起動
+python 05_webapp.py
+
+# ポート指定 (デフォルト: 8000)
+python 05_webapp.py --port 9000
+```
+
+ブラウザで **http://localhost:8000** を開いて使用します。
+
+**機能**:
+- LLM 回答のリアルタイムストリーミング (SSE)
+- Markdown レンダリング (テーブル・見出し・リスト・コードブロック対応)
+- 参照元ページの一覧表示 (類似度スコア付き)
+- 日本語 / 英語の自動対応
+- サンプル質問ボタン
 
 ---
 
@@ -241,11 +278,15 @@ python 04_query.py "your question here"
 ```
 greenbook-rag/
 ├── config.py                     # 設定ファイル
+├── query_core.py                 # 検索・コンテキスト構築 (共通ロジック)
 ├── 01_extract_text.py            # Phase 1: テキスト抽出
 ├── 01b_ocr_extract.py            # Phase 1b: OCR
 ├── 02_chunk_text.py              # Phase 2: チャンク分割
 ├── 03_build_vectordb.py          # Phase 3: VectorDB構築
-├── 04_query.py                   # Phase 4: クエリ
+├── 04_query.py                   # Phase 4: クエリ (CLI)
+├── 05_webapp.py                  # Phase 4: Web アプリ (FastAPI)
+├── templates/
+│   └── index.html                # チャット UI
 ├── requirements.txt              # 依存パッケージ
 ├── DEVELOPMENT_LOG.md            # 開発プロセス記録
 ├── data/
