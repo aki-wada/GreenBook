@@ -346,3 +346,30 @@ data: {"model": "medgemma-27b-text-it-mlx", "language": "en", "elapsed": 39.9}
 ### GET `/`
 
 チャット UI の HTML ページを返します。
+
+---
+
+## 10. ストレージ使用量
+
+| コンポーネント | サイズ | 場所 |
+|---|---|---|
+| アプリ本体 (コード) | ~100KB | `greenbook-rag/*.py`, `templates/` |
+| 抽出テキスト | 10MB | `data/extracted/` |
+| チャンクデータ | 5.8MB | `data/chunks/` |
+| VectorDB | 59MB | `~/.greenbook-rag/vectordb/` |
+| Python 仮想環境 | 1.2GB | `greenbook-rag/.venv/` |
+| Embedding モデルキャッシュ | 419MB | `~/.cache/huggingface/` |
+| 元 PDF | 810MB | `data/raw/` (シンボリックリンク) |
+
+### サマリー
+
+| 区分 | サイズ |
+|---|---|
+| コード | ~100KB |
+| 生成データ (テキスト + チャンク + VectorDB) | ~75MB |
+| Python 環境 + モデルキャッシュ | ~1.6GB |
+| 元 PDF | 810MB |
+| **総計** | **約 2.5GB** |
+
+> 大半は Python パッケージ (PyTorch, sentence-transformers 等) と Embedding モデルのキャッシュです。
+> コードと生成データだけであれば 75MB 程度です。
