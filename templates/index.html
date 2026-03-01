@@ -77,8 +77,104 @@
     line-height: 1.7;
   }
 
-  .msg-a p { margin-bottom: 8px; }
-  .msg-a p:last-child { margin-bottom: 0; }
+  /* Markdown content styles */
+  .md-content h1, .md-content h2, .md-content h3, .md-content h4 {
+    color: #4fc3f7;
+    margin: 16px 0 8px 0;
+    line-height: 1.3;
+  }
+  .md-content h1:first-child, .md-content h2:first-child, .md-content h3:first-child {
+    margin-top: 0;
+  }
+  .md-content h1 { font-size: 18px; }
+  .md-content h2 { font-size: 16px; }
+  .md-content h3 { font-size: 15px; }
+  .md-content h4 { font-size: 14px; color: #81d4fa; }
+
+  .md-content p { margin-bottom: 8px; }
+  .md-content p:last-child { margin-bottom: 0; }
+
+  .md-content ul, .md-content ol {
+    margin: 8px 0;
+    padding-left: 24px;
+  }
+  .md-content li { margin-bottom: 4px; }
+  .md-content li::marker { color: #4fc3f7; }
+
+  .md-content strong { color: #e0e0e0; font-weight: 600; }
+  .md-content em { color: #b0bec5; }
+
+  .md-content blockquote {
+    border-left: 3px solid #4fc3f7;
+    margin: 8px 0;
+    padding: 4px 12px;
+    color: #90a4ae;
+    background: rgba(79, 195, 247, 0.05);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .md-content code {
+    background: #263238;
+    color: #80cbc4;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: "SF Mono", "Fira Code", monospace;
+  }
+
+  .md-content pre {
+    background: #1e2530;
+    border: 1px solid #2a2d3a;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+  }
+  .md-content pre code {
+    background: none;
+    padding: 0;
+    font-size: 13px;
+  }
+
+  .md-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .md-content thead th {
+    background: #1e2530;
+    color: #4fc3f7;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    border: 1px solid #2a2d3a;
+    white-space: nowrap;
+  }
+  .md-content tbody td {
+    padding: 6px 10px;
+    border: 1px solid #2a2d3a;
+    vertical-align: top;
+  }
+  .md-content tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .md-content tbody tr:hover {
+    background: rgba(79, 195, 247, 0.05);
+  }
+
+  .md-content hr {
+    border: none;
+    border-top: 1px solid #2a2d3a;
+    margin: 12px 0;
+  }
+
+  .md-content a {
+    color: #4fc3f7;
+    text-decoration: none;
+  }
+  .md-content a:hover { text-decoration: underline; }
 
   .sources {
     margin-top: 12px;
@@ -232,6 +328,7 @@
     #send { padding: 10px 16px; font-size: 14px; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/marked@15/marked.min.js"></script>
 </head>
 <body>
 
@@ -294,13 +391,14 @@ function escapeHtml(text) {
   return d.innerHTML;
 }
 
-function formatAnswer(text) {
-  // Simple markdown-like formatting
-  return text
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+// marked.js configuration
+marked.setOptions({
+  breaks: true,     // \n → <br> (GFM style)
+  gfm: true,        // GitHub Flavored Markdown (tables, strikethrough)
+});
+
+function renderMarkdown(text) {
+  return '<div class="md-content">' + marked.parse(text) + '</div>';
 }
 
 async function handleSubmit(e) {
@@ -371,7 +469,7 @@ async function handleSubmit(e) {
             sourcesHtml += '</details>';
           } else if (eventType === 'token') {
             answerText += data.text;
-            aDiv.innerHTML = '<p>' + formatAnswer(escapeHtml(answerText)) + '</p><span class="typing"></span>';
+            aDiv.innerHTML = renderMarkdown(answerText) + '<span class="typing"></span>';
             chat.scrollTop = chat.scrollHeight;
           } else if (eventType === 'done') {
             metaHtml = '<div class="meta">' + data.model + ' | ' + data.language + ' | ' + data.elapsed + 's</div>';
@@ -386,7 +484,7 @@ async function handleSubmit(e) {
   }
 
   // Final render
-  aDiv.innerHTML = '<p>' + formatAnswer(escapeHtml(answerText)) + '</p>' + sourcesHtml + metaHtml;
+  aDiv.innerHTML = renderMarkdown(answerText) + sourcesHtml + metaHtml;
   chat.scrollTop = chat.scrollHeight;
 
   sendBtn.disabled = false;

@@ -96,7 +96,10 @@ async def api_query(request: Request):
             "If the reference does not contain relevant information, say so clearly. "
             "Answer in the same language as the question. "
             "When answering in Japanese, use standard radiology terminology "
-            "while keeping English technical terms where conventionally used."
+            "while keeping English technical terms where conventionally used. "
+            "Format your answer using Markdown: use **bold** for emphasis, "
+            "headings (##) for sections, bullet lists for enumerations, "
+            "and Markdown tables (| col1 | col2 |) when presenting structured data."
         )
         user_prompt = (
             f"## Reference Material\n\n{context}\n\n---\n\n"
