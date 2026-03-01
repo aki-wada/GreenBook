@@ -1,0 +1,15 @@
+# PDF Processing
+pdfplumber>=0.10.0
+PyMuPDF>=1.24.0
+
+# Embedding
+sentence-transformers>=2.2.0
+
+# Vector DB
+chromadb>=0.4.0
+
+# LLM API Client
+openai>=1.0.0
+
+# Utilities
+tqdm>=4.60.0
