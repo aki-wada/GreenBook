@@ -170,7 +170,7 @@ async def health():
 
 
 if __name__ == "__main__":
-    port = 8000
+    port = 8321
     for i, arg in enumerate(sys.argv[1:]):
         if arg == "--port" and i + 1 < len(sys.argv) - 1:
             port = int(sys.argv[i + 2])

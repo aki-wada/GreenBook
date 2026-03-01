@@ -115,7 +115,7 @@ python 04_query.py
 python 05_webapp.py
 ```
 
-ブラウザで **http://localhost:8000** を開くとチャット画面が表示されます。
+ブラウザで **http://localhost:8321** を開くとチャット画面が表示されます。
 
 1. テキストボックスに質問を入力して「送信」(または Enter キー)
 2. LLM の回答がリアルタイムにストリーミング表示されます
@@ -216,7 +216,7 @@ python 05_webapp.py
 python 05_webapp.py --port 9000
 ```
 
-ブラウザで **http://localhost:8000** を開いて使用します。
+ブラウザで **http://localhost:8321** を開いて使用します。
 
 **機能**:
 - LLM 回答のリアルタイムストリーミング (SSE)

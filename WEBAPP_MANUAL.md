@@ -17,16 +17,16 @@ python 05_webapp.py
 
 起動ログ:
 ```
-  GreenBook RAG Web → http://localhost:8000
+  GreenBook RAG Web → http://localhost:8321
 
 Loading embedding model: BAAI/bge-base-en-v1.5
 Connecting to ChromaDB: /Users/.../.greenbook-rag/vectordb
 Collection loaded: 3340 chunks
 Ready.
-Uvicorn running on http://0.0.0.0:8000
+Uvicorn running on http://0.0.0.0:8321
 ```
 
-`Ready.` が表示されたら準備完了です。ブラウザで **http://localhost:8000** を開きます。
+`Ready.` が表示されたら準備完了です。ブラウザで **http://localhost:8321** を開きます。
 
 ### ポートを変更する場合
 
@@ -42,7 +42,7 @@ nohup python 05_webapp.py > webapp.log 2>&1 &
 
 停止するとき:
 ```bash
-kill $(lsof -ti :8000)
+kill $(lsof -ti :8321)
 ```
 
 ---
@@ -195,11 +195,11 @@ LM Studio に指定モデルがロードされていません。
 
 VectorDB が未構築です。「8. RAG パイプライン構築」を参照してください。
 
-### ポート 8000 が既に使われている
+### ポート 8321 が既に使われている
 
 ```bash
 # 使用中のプロセスを確認
-lsof -i :8000
+lsof -i :8321
 
 # 別のポートで起動
 python 05_webapp.py --port 9000
@@ -222,7 +222,7 @@ python 05_webapp.py --port 9000
 ## 7. ヘルスチェック API
 
 ```bash
-curl http://localhost:8000/api/health
+curl http://localhost:8321/api/health
 ```
 
 レスポンス例:
